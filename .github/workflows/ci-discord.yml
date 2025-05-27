@@ -1,0 +1,40 @@
+name: Shopee Robot CI + Discord
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  robot-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python & Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        webdrivermanager chrome --linkpath /usr/local/bin
+
+    - name: Run Robot Tests (Headless)
+      run: |
+        robot --variable BROWSER:headlesschrome --outputdir results tests/
+
+    - name: Upload Robot Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: robot-report
+        path: results/
+
+    - name: Notify Discord
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d "{\"content\":\":white_check_mark: Test Shopee selesai!\\n🔗 [Lihat hasil GitHub Actions](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})\"}" \
+             $DISCORD_WEBHOOK
