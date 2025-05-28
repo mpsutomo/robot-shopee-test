@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.3 on darwin)" generated="2025-05-27T16:25:52.124123" rpa="false" schemaversion="5">
+<suite id="s1" name="Tests" source="/Users/muhammadprabus/Documents/robot-test/tests">
+<suite id="s1-s1" name="Shopee Test" source="/Users/muhammadprabus/Documents/robot-test/tests/shopee_test.robot">
+<kw name="Open Shopee Website" type="SETUP">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-05-27T16:25:52.212822" level="INFO">Opening browser 'chrome' to base url 'https://shopee.co.id'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-05-27T16:25:52.212701" elapsed="5.692748"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-05-27T16:25:57.915385" elapsed="0.315578"/>
+</kw>
+<kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
+<msg time="2025-05-27T16:26:03.609208" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-05-27T16:26:03.609376" level="FAIL">Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</msg>
+<arg>xpath=//input[@placeholder="Cari di Shopee"]</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="FAIL" start="2025-05-27T16:25:58.231085" elapsed="5.381670">Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</status>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<arg>Close Login Popup If Exists</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="NOT RUN" start="2025-05-27T16:26:03.612887" elapsed="0.000020"/>
+</kw>
+<status status="FAIL" start="2025-05-27T16:25:52.212376" elapsed="11.400617">Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</status>
+</kw>
+<test id="s1-s1-t1" name="Search And Verify Product" line="24">
+<status status="FAIL" start="2025-05-27T16:26:03.613070" elapsed="0.000411">Parent suite setup failed:
+Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</status>
+</test>
+<test id="s1-s1-t2" name="Click On First Product And Log Title" line="31">
+<status status="FAIL" start="2025-05-27T16:26:03.613774" elapsed="0.000169">Parent suite setup failed:
+Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</status>
+</test>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-05-27T16:26:03.614813" elapsed="0.087160"/>
+</kw>
+<status status="FAIL" start="2025-05-27T16:25:52.138034" elapsed="11.563995">Suite setup failed:
+Element 'xpath=//input[@placeholder="Cari di Shopee"]' did not appear in 5 seconds.</status>
+</suite>
+<status status="FAIL" start="2025-05-27T16:25:52.124652" elapsed="11.577764"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="2" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Tests" id="s1" pass="0" fail="2" skip="0">Tests</stat>
+<stat name="Shopee Test" id="s1-s1" pass="0" fail="2" skip="0">Tests.Shopee Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
