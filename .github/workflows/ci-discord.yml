@@ -28,9 +28,10 @@ jobs:
       run: |
         sudo rm -f /usr/local/bin/chromedriver || true
 
-    - name: Setup Chrome WebDriver with webdrivermanager (force update)
+    - name: Setup Chrome WebDriver with webdrivermanager
       run: |
-        webdrivermanager chrome --linkpath /usr/local/bin --force
+        webdrivermanager chrome --linkpath /usr/local/bin
+
 
     - name: Run Robot Tests (Headless Chrome with needed options)
       run: |
