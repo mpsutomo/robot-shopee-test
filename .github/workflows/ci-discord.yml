@@ -28,9 +28,17 @@ jobs:
       run: |
         sudo rm -f /usr/local/bin/chromedriver || true
 
-    - name: Setup Chrome WebDriver with webdrivermanager
+    - name: Install ChromeDriver version 136 manually
       run: |
-        webdrivermanager chrome --linkpath /usr/local/bin
+        wget -N https://chromedriver.storage.googleapis.com/136.0.7103.113/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/chromedriver
+        sudo chmod +x /usr/local/bin/chromedriver
+
+    - name: Check Chrome & Chromedriver versions
+      run: |
+        google-chrome --version
+        chromedriver --version
 
     - name: Run Robot Tests (Headless Chrome with needed options)
       run: |
