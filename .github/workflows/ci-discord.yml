@@ -23,6 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install webdrivermanager
+        sudo apt-get install -y jq  # Required for JSON parsing
 
     - name: Install Chrome (Specific Version 136.0.7103.92)
       run: |
@@ -58,16 +59,27 @@ jobs:
       run: |
         echo "Chrome version: $(google-chrome --version)"
         echo "ChromeDriver version: $(chromedriver --version)"
-    - name: Run Robot Tests with Fixes
+
+    - name: Setup X11 Environment
       run: |
-          # Tambahkan environment variable untuk Chrome
-          export DISPLAY=:99
-          /usr/bin/Xvfb :99 -screen 0 1280x1024x24 &
-          
-          # Jalankan test dengan opsi tambahan
-          robot --variable BROWSER:headlesschrome \
-                --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 --disable-software-rasterizer --disable-extensions --disable-setuid-sandbox --disable-infobars --single-process" \
-                --outputdir results tests/
+        sudo apt-get install -y xvfb x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-scalable
+        /usr/bin/Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset >/dev/null 2>&1 &
+        export DISPLAY=:99
+        export DBUS_SESSION_BUS_ADDRESS=/dev/null
+        sleep 5  # Wait for Xvfb to start
+
+    - name: Run Robot Tests with Enhanced Configuration
+      run: |
+        # Set Chrome flags with additional stability options
+        export CHROME_FLAGS="--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 --disable-extensions --disable-setuid-sandbox --disable-software-rasterizer --disable-infobars --single-process --window-size=1920,1080"
+        
+        # Run tests with increased timeout
+        robot --variable BROWSER:headlesschrome \
+              --variable CHROME_OPTIONS:"$CHROME_FLAGS" \
+              --variable TIMEOUT:300 \
+              --exitonfailure \
+              --outputdir results \
+              tests/
 
     - name: Notify Discord
       env:
