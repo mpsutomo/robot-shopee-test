@@ -13,10 +13,10 @@ Valid Login To OttoPoint
     Maximize Browser Window
     Wait Until Page Contains Element    xpath=//input[@type='userID']    timeout=10s
     Input Text    xpath=//input[@type='userID']    ${USERNAME}
-    Click Button    xpath=//button[contains(text(),'Submit')]
+    Click Button    xpath=//button[contains(., 'Submit')]
     Wait Until Page Contains Element    id=password    timeout=10s
     Input Text    id=password    ${PASSWORD}
-    Click Button    xpath=//button[contains(text(),'Login')]
+    Click Button    xpath=//button[contains(., 'Login')]
     # Tambahkan assertion jika perlu, contoh:
     # Wait Until Page Contains    Welcome, admin
 
