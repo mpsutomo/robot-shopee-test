@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.2.2 (Python 3.13.3 on darwin)" generated="2025-05-28T11:10:44.715424" rpa="false" schemaversion="5">
+<robot generator="Robot 7.2.2 (Python 3.13.3 on darwin)" generated="2025-05-28T11:13:13.757231" rpa="false" schemaversion="5">
 <suite id="s1" name="Otto Login" source="/Users/muhammadprabus/Documents/robot-test/tests/otto_login.robot">
 <test id="s1-t1" name="Valid Login To OttoPoint" line="10">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2025-05-28T11:10:44.803325" level="INFO">Opening browser 'chrome' to base url 'https://admin-dev.ottopoint.id/ottopointweb/#/login'.</msg>
+<msg time="2025-05-28T11:13:13.844271" level="INFO">Opening browser 'chrome' to base url 'https://admin-dev.ottopoint.id/ottopointweb/#/login'.</msg>
 <arg>${URL}</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2025-05-28T11:10:44.803204" elapsed="3.525802"/>
+<status status="PASS" start="2025-05-28T11:13:13.844145" elapsed="3.792624"/>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2025-05-28T11:10:48.329972" elapsed="0.315276"/>
+<status status="PASS" start="2025-05-28T11:13:17.645422" elapsed="0.323763"/>
 </kw>
 <kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
 <arg>xpath=//input[@type='userID']</arg>
 <arg>timeout=10s</arg>
 <doc>Waits until the element ``locator`` appears on the current page.</doc>
-<status status="PASS" start="2025-05-28T11:10:48.645673" elapsed="0.010349"/>
+<status status="PASS" start="2025-05-28T11:13:17.970475" elapsed="0.012532"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-05-28T11:10:48.656455" level="INFO">Typing text 'admin' into text field 'xpath=//input[@type='userID']'.</msg>
+<msg time="2025-05-28T11:13:17.983390" level="INFO">Typing text 'admin' into text field 'xpath=//input[@type='userID']'.</msg>
 <arg>xpath=//input[@type='userID']</arg>
 <arg>${USERNAME}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-05-28T11:10:48.656243" elapsed="0.080826"/>
+<status status="PASS" start="2025-05-28T11:13:17.983181" elapsed="0.099710"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-05-28T11:10:48.737382" level="INFO">Clicking button 'xpath=//button[contains(., 'Submit')]'.</msg>
+<msg time="2025-05-28T11:13:18.083484" level="INFO">Clicking button 'xpath=//button[contains(., 'Submit')]'.</msg>
 <arg>xpath=//button[contains(., 'Submit')]</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-05-28T11:10:48.737259" elapsed="0.044239"/>
+<status status="PASS" start="2025-05-28T11:13:18.083265" elapsed="0.110566"/>
 </kw>
 <kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
 <arg>id=password</arg>
 <arg>timeout=10s</arg>
 <doc>Waits until the element ``locator`` appears on the current page.</doc>
-<status status="PASS" start="2025-05-28T11:10:48.781770" elapsed="0.226364"/>
+<status status="PASS" start="2025-05-28T11:13:18.194036" elapsed="0.216648"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-05-28T11:10:49.009172" level="INFO">Typing text 'open123' into text field 'id=password'.</msg>
+<msg time="2025-05-28T11:13:18.411204" level="INFO">Typing text 'open123' into text field 'id=password'.</msg>
 <arg>id=password</arg>
 <arg>${PASSWORD}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-05-28T11:10:49.008690" elapsed="0.036307"/>
+<status status="PASS" start="2025-05-28T11:13:18.410945" elapsed="0.034634"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-05-28T11:10:49.045315" level="INFO">Clicking button 'xpath=//button[contains(., 'Login')]'.</msg>
+<msg time="2025-05-28T11:13:18.445926" level="INFO">Clicking button 'xpath=//button[contains(., 'Login')]'.</msg>
 <arg>xpath=//button[contains(., 'Login')]</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-05-28T11:10:49.045186" elapsed="0.061447"/>
+<status status="PASS" start="2025-05-28T11:13:18.445780" elapsed="0.052515"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2025-05-28T11:10:49.106948" elapsed="0.075648"/>
+<status status="PASS" start="2025-05-28T11:13:18.498591" elapsed="0.076873"/>
 </kw>
 <tag>login</tag>
-<status status="PASS" start="2025-05-28T11:10:44.802700" elapsed="4.380028"/>
+<status status="PASS" start="2025-05-28T11:13:13.843648" elapsed="4.731953"/>
 </test>
-<status status="PASS" start="2025-05-28T11:10:44.715957" elapsed="4.467139"/>
+<status status="PASS" start="2025-05-28T11:13:13.757837" elapsed="4.818115"/>
 </suite>
 <statistics>
 <total>
