@@ -17,7 +17,11 @@ Valid Login To OttoPoint
     Wait Until Page Contains Element    id=password    timeout=10s
     Input Text    id=password    ${PASSWORD}
     Click Button    xpath=//button[contains(., 'Login')]
-    # Tambahkan assertion jika perlu, contoh:
-    # Wait Until Page Contains    Welcome, admin
 
-    [Teardown]    Close Browser
+    [Teardown]    Log Page Source And Close Browser
+
+*** Keywords ***
+Log Page Source And Close Browser
+    ${source}=    Get Source
+    Log    ${source}    html=True
+    Close Browser
