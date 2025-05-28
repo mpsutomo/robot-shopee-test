@@ -62,11 +62,16 @@ jobs:
         google-chrome --version
         chromedriver --version
 
-    - name: Run Robot Tests (Headless Chrome with needed options)
-      run: |
-        robot --variable BROWSER:headlesschrome \
-              --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222" \
-              --outputdir results tests/
+    - name: Run Robot Tests with Fixes
+        run: |
+          # Tambahkan environment variable untuk Chrome
+          export DISPLAY=:99
+          /usr/bin/Xvfb :99 -screen 0 1280x1024x24 &
+          
+          # Jalankan test dengan opsi tambahan
+          robot --variable BROWSER:headlesschrome \
+                --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 --disable-software-rasterizer --disable-extensions --disable-setuid-sandbox --disable-infobars --single-process" \
+                --outputdir results tests/
 
     - name: Notify Discord
       env:
