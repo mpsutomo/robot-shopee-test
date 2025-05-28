@@ -28,17 +28,31 @@ jobs:
       run: |
         sudo rm -f /usr/local/bin/chromedriver || true
 
-    - name: Install ChromeDriver matching Chrome version
+    - name: Setup ChromeDriver
       run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-        CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
-        echo "Chrome major version: $CHROME_MAJOR_VERSION"
-        CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION)
-        echo "ChromeDriver version to download: $CHROMEDRIVER_VERSION"
-        wget -N https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+')
+        echo "Detected Chrome major version: $CHROME_VERSION"
+
+        # Fungsi cek apakah URL chromedriver versi itu valid
+        check_version() {
+          curl --silent --head --fail https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$1
+        }
+
+        # Coba versi Chrome detected, fallback ke versi sebelumnya jika tidak ada
+        VERSION_TO_CHECK=$CHROME_VERSION
+        while ! check_version $VERSION_TO_CHECK && [ $VERSION_TO_CHECK -gt 80 ]; do
+          echo "Version $VERSION_TO_CHECK not found, fallback ke versi sebelumnya"
+          VERSION_TO_CHECK=$((VERSION_TO_CHECK-1))
+        done
+
+        CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$VERSION_TO_CHECK)
+        echo "Downloading chromedriver version $CHROME_DRIVER_VERSION"
+
+        wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin/chromedriver
         sudo chmod +x /usr/local/bin/chromedriver
+
 
 
     - name: Check Chrome & Chromedriver versions
