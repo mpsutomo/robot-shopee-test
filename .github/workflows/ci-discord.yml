@@ -24,6 +24,11 @@ jobs:
         pip install -r requirements.txt
         pip install webdrivermanager
 
+    - name: Install Chrome Browser
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
     - name: Remove old chromedriver if exists
       run: |
         sudo rm -f /usr/local/bin/chromedriver || true
@@ -31,50 +36,26 @@ jobs:
     - name: Setup ChromeDriver
       run: |
         set -e
-
-        # Ambil versi lengkap Chrome, contoh: "Google Chrome 136.0.7103.92"
+        
+        # Get complete Chrome version (e.g., "Google Chrome 136.0.7103.92")
         FULL_VERSION=$(google-chrome --version)
-
-        # Extract hanya major version (angka sebelum titik pertama)
-        CHROME_MAJOR_VERSION=$(echo "$FULL_VERSION" | grep -oP '\d+' | head -1)
-
-        echo "Detected Chrome major version: $CHROME_MAJOR_VERSION"
-
-        # Fungsi cek apakah chromedriver versi ini ada
-        function check_version() {
-          VERSION=$1
-          # Cek apakah URL LATEST_RELEASE_$VERSION ada (status code 200)
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$VERSION")
-          if [[ "$HTTP_STATUS" == "200" ]]; then
-            return 0
-          else
-            return 1
-          fi
-        }
-
-        VERSION_TO_CHECK=$CHROME_MAJOR_VERSION
-
-        # Cari chromedriver versi yang valid, fallback ke versi lebih kecil sampai 80
-        while ! check_version $VERSION_TO_CHECK && [[ $VERSION_TO_CHECK -gt 80 ]]; do
-          echo "Version $VERSION_TO_CHECK not found, fallback to $((VERSION_TO_CHECK - 1))"
-          VERSION_TO_CHECK=$((VERSION_TO_CHECK - 1))
-        done
-
-        if [[ $VERSION_TO_CHECK -lt 80 ]]; then
-          echo "No suitable ChromeDriver version found"
-          exit 1
-        fi
-
-        # Ambil versi chromedriver yang tepat
-        CHROME_DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$VERSION_TO_CHECK")
-
+        
+        # Extract full version number (e.g., "136.0.7103.92")
+        CHROME_VERSION=$(echo "$FULL_VERSION" | grep -oP '\d+\.\d+\.\d+\.\d+')
+        
+        echo "Detected Chrome version: $CHROME_VERSION"
+        
+        # Download matching ChromeDriver version
+        CHROME_MAJOR_VERSION=$(echo "$CHROME_VERSION" | cut -d'.' -f1)
+        CHROME_DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+        
         echo "Downloading ChromeDriver version: $CHROME_DRIVER_VERSION"
-
+        
         wget -N "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip"
         unzip -o chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin/chromedriver
         sudo chmod +x /usr/local/bin/chromedriver
-
+        rm chromedriver_linux64.zip
 
     - name: Check Chrome & Chromedriver versions
       run: |
@@ -84,14 +65,8 @@ jobs:
     - name: Run Robot Tests (Headless Chrome with needed options)
       run: |
         robot --variable BROWSER:headlesschrome \
-              --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu" \
+              --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222" \
               --outputdir results tests/
-
-    # - name: Upload Robot Report
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: robot-report
-    #     path: results/
 
     - name: Notify Discord
       env:
