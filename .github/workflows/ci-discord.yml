@@ -32,11 +32,10 @@ jobs:
       run: |
         webdrivermanager chrome --linkpath /usr/local/bin
 
-
     - name: Run Robot Tests (Headless Chrome with needed options)
       run: |
         robot --variable BROWSER:headlesschrome \
-              --variable CHROME_OPTIONS:--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu \
+              --variable CHROME_OPTIONS:"--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu" \
               --outputdir results tests/
 
     # - name: Upload Robot Report
