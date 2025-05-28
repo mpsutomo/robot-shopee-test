@@ -24,44 +24,40 @@ jobs:
         pip install -r requirements.txt
         pip install webdrivermanager
 
-    - name: Install Chrome Browser
+    - name: Install Chrome (Specific Version 136.0.7103.92)
       run: |
         sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        sudo apt-get install -y wget
+        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -y -f
+        sudo apt-get install -y -f
+        rm google-chrome-stable_current_amd64.deb
 
-    - name: Remove old chromedriver if exists
+    - name: Install Matching ChromeDriver
       run: |
-        sudo rm -f /usr/local/bin/chromedriver || true
-
-    - name: Setup ChromeDriver
-      run: |
-        set -e
-        
-        # Get complete Chrome version (e.g., "Google Chrome 136.0.7103.92")
-        FULL_VERSION=$(google-chrome --version)
-        
-        # Extract full version number (e.g., "136.0.7103.92")
-        CHROME_VERSION=$(echo "$FULL_VERSION" | grep -oP '\d+\.\d+\.\d+\.\d+')
-        
+        # Gunakan Chrome for Testing API baru
+        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
         echo "Detected Chrome version: $CHROME_VERSION"
         
-        # Download matching ChromeDriver version
-        CHROME_MAJOR_VERSION=$(echo "$CHROME_VERSION" | cut -d'.' -f1)
-        CHROME_DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+        # Download versi yang sesuai dari endpoint baru
+        BASE_URL="https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing"
+        VERSION_JSON=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-versions-per-milestone.json")
+        
+        # Cari versi yang cocok
+        CHROME_DRIVER_VERSION=$(echo "$VERSION_JSON" | jq -r ".milestones.\"$(echo $CHROME_VERSION | cut -d'.' -f1)\".version")
         
         echo "Downloading ChromeDriver version: $CHROME_DRIVER_VERSION"
         
-        wget -N "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip"
-        unzip -o chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/chromedriver
+        wget "$BASE_URL/$CHROME_DRIVER_VERSION/linux64/chromedriver-linux64.zip"
+        unzip chromedriver-linux64.zip -d chromedriver
+        sudo mv chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/
         sudo chmod +x /usr/local/bin/chromedriver
-        rm chromedriver_linux64.zip
+        rm -rf chromedriver*
 
-    - name: Check Chrome & Chromedriver versions
+    - name: Verify Versions
       run: |
-        google-chrome --version
-        chromedriver --version
-
+        echo "Chrome version: $(google-chrome --version)"
+        echo "ChromeDriver version: $(chromedriver --version)"
     - name: Run Robot Tests with Fixes
       run: |
           # Tambahkan environment variable untuk Chrome
