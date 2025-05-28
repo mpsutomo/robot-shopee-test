@@ -70,16 +70,16 @@ jobs:
 
     - name: Run Robot Tests with Enhanced Configuration
       run: |
-        # Set Chrome flags with additional stability options
-        export CHROME_FLAGS="--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 --disable-extensions --disable-setuid-sandbox --disable-software-rasterizer --disable-infobars --single-process --window-size=1920,1080"
-        
-        # Run tests with increased timeout
-        robot --variable BROWSER:headlesschrome \
-              --variable CHROME_OPTIONS:"$CHROME_FLAGS" \
-              --variable TIMEOUT:300 \
-              --exitonfailure \
-              --outputdir results \
-              tests/
+          # Set Chrome flags with additional stability options
+          export CHROME_FLAGS="--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 --disable-extensions --disable-setuid-sandbox --disable-software-rasterizer --disable-infobars --single-process --window-size=1920,1080 --user-data-dir=/tmp/chrome_user_data"
+              
+              # Run tests with increased timeout
+              robot --variable BROWSER:headlesschrome \
+                    --variable CHROME_OPTIONS:"$CHROME_FLAGS" \
+                    --variable TIMEOUT:300 \
+                    --exitonfailure \
+                    --outputdir results \
+                    tests/
 
     - name: Notify Discord
       env:
